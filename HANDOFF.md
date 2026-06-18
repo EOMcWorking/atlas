@@ -1,17 +1,49 @@
-# Current Goal
 
-Atlas v0.2
+# Atlas Handoff
 
-# Completed
+## Project
 
-- FastAPI
-- SQLite
-- Task system
+# Atlas
 
-# Next Task
+Personal AI orchestration platform.
 
-Build Atlas Memory System
+Goals:
+- Task management
+- Memory management
+- AI routing
+- Local model integration
+- Multi-provider orchestration
 
-# Status
+## Tasks
 
-v0.1 complete
+# Atlas Tasks
+
+## Version 0.1
+
+- [ ] Setup FastAPI
+- [ ] Create task model
+- [ ] Create task CRUD
+- [ ] Add SQLite
+- [ ] Test endpoints
+
+## Decisions
+
+## Atlas v0.1
+
+Completed:
+- FastAPI setup
+- SQLite integration
+- Task model
+- Task CRUD foundation
+- Git repository setup
+
+Next:
+- Memory system
+Atlas v0.2 memory system started
+
+## Atlas v0.2
+
+Completed:
+- Memory API
+- Decision storage
+- Handoff generation

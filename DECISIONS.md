@@ -9,3 +9,11 @@ Completed:
 
 Next:
 - Memory system
+Atlas v0.2 memory system started
+
+## Atlas v0.2
+
+Completed:
+- Memory API
+- Decision storage
+- Handoff generation
