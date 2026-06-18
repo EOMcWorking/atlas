@@ -17,3 +17,6 @@ Completed:
 - Memory API
 - Decision storage
 - Handoff generation
+Use Qwen for coding tasks
+
+Use Qwen for coding tasks

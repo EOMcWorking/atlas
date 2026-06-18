@@ -6,6 +6,12 @@ from src.services.ollama_service import chat
 from src.services.ollama_service import (
     suggest_next_task
 )
+from src.services.project_review_service import (
+    review_project
+)
+from src.services.task_generation_service import (
+    generate_next_task
+)
 
 router = APIRouter()
 
@@ -21,4 +27,16 @@ def ai_chat(request: ChatRequest):
         "response": chat(
             request.prompt
         )
+    }
+
+@router.post("/ai/project-review")
+def project_review():
+    return {
+        "review": review_project()
+    }
+
+@router.post("/ai/next-task")
+def next_task():
+    return {
+        "task": generate_next_task()
     }

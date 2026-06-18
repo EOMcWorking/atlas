@@ -11,3 +11,5 @@ atlas.db
 .env.*
 
 *.log
+
+atlas_snapshot.json
