@@ -1,11 +1,17 @@
 # Current Goal
 
-Complete Atlas v0.1
+Atlas v0.2
+
+# Completed
+
+- FastAPI
+- SQLite
+- Task system
 
 # Next Task
 
-Install dependencies
+Build Atlas Memory System
 
 # Status
 
-Project initialized
+v0.1 complete

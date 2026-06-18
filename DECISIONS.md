@@ -1,8 +1,11 @@
-# Decisions
+## Atlas v0.1
 
-## 2026-06-18
+Completed:
+- FastAPI setup
+- SQLite integration
+- Task model
+- Task CRUD foundation
+- Git repository setup
 
-- Language: Python
-- API Framework: FastAPI
-- Database: SQLite
-- IDE: VS Code
+Next:
+- Memory system
