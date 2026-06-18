@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+
+atlas.db
+
+.vscode/
+.idea/
+
+.env
+.env.*
+
+*.log
