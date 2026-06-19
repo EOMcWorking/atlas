@@ -15,7 +15,7 @@ from src.api.project_context import router as project_context_router
 from src.api.context import router as context_router
 from src.api.review import router as review_router
 from src.api.context_selector import router as context_selector_router
-
+from src.api.project_index import router as project_index_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -31,6 +31,7 @@ app.include_router(memory_router)
 app.include_router(handoff_router)
 app.include_router(ai_router)
 app.include_router(snapshot_router)
+app.include_router(project_index_router)
 app.include_router(project_router)
 app.include_router(review_router)
 app.include_router(context_selector_router)
