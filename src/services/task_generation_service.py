@@ -54,5 +54,5 @@ Return concise output.
 
     return chat(
         prompt,
-        task_type="general"
+        task_type="planning"
     )

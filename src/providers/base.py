@@ -3,5 +3,5 @@ from abc import ABC, abstractmethod
 class AIProvider(ABC):
 
     @abstractmethod
-    def chat(self, prompt: str):
+    def chat(self, prompt: str, model: str):
         pass

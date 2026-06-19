@@ -9,6 +9,7 @@ from src.services.memory_service import (
     read_file,
     search_decisions,
     DECISIONS_FILE,
+    MEMORY_FILE,
 )
 
 router = APIRouter()
@@ -48,4 +49,19 @@ def memory_search(
 def memory_summary():
     return {
         "summary": summarize_decisions()
+    }
+
+@router.post("/memory/note")
+def add_memory(
+    entry: MemoryEntry
+):
+    append_to_file(
+        MEMORY_FILE,
+        entry.text
+    )
+    read_file(
+    MEMORY_FILE
+    )
+    return {
+        "status": "saved"
     }

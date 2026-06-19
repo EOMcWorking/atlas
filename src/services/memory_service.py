@@ -5,6 +5,7 @@ PROJECT_FILE = Path("PROJECT.md")
 TASKS_FILE = Path("TASKS.md")
 DECISIONS_FILE = Path("DECISIONS.md")
 HANDOFF_FILE = Path("HANDOFF.md")
+MEMORY_FILE = Path("MEMORY.md")
 
 def search_decisions(query: str):
     content = read_file(
@@ -54,8 +55,43 @@ DECISIONS:
 
 {content}
 """
+def get_relevant_context(
+    query: str,
+    limit: int = 10
+):
+    content = read_file(
+        DECISIONS_FILE
+    )
+
+    matches = []
+
+    query_words = query.lower().split()
+
+    for line in content.splitlines():
+
+        line_lower = line.lower()
+
+        score = 0
+
+        for word in query_words:
+            if word in line_lower:
+                score += 1
+
+        if score > 0:
+            matches.append(
+                (score, line)
+    )
+    matches.sort(
+            reverse=True
+    )
+
+    return [
+        line
+        for score, line
+        in matches[:limit]
+    ]
 
     return chat(
         prompt,
-        task_type="general"
+        task_type="planning"
     )

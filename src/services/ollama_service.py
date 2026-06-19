@@ -1,13 +1,59 @@
-from src.services.model_router import get_model
-import ollama
-
-from src.core.config import DEFAULT_MODEL, MODELS
 from pathlib import Path
-MODEL_NAME = DEFAULT_MODEL
+
+from src.providers.provider_router import get_provider_chain
+
+from src.services.model_router import get_model
+
+
+
+def chat(
+    prompt: str,
+    task_type: str = "general"
+):
+    from src.services.memory_service import (
+        get_relevant_context
+    )
+
+    model = get_model(task_type)
+
+    context = get_relevant_context(
+        prompt
+    )
+
+    enhanced_prompt = f"""
+Atlas Memory:
+
+{chr(10).join(context)}
+
+User Request:
+
+{prompt}
+"""
+
+    for provider in get_provider_chain():
+
+        try:
+            return provider.chat(
+                enhanced_prompt,
+                model
+            )
+
+        except Exception as e:
+            print(
+                f"Provider failed: {e}"
+            )
+
+            continue
+
+    raise Exception(
+        "No provider available"
+    )
 
 
 def suggest_next_task():
-    tasks = Path("TASKS.md").read_text(
+    tasks = Path(
+        "TASKS.md"
+    ).read_text(
         encoding="utf-8"
     )
 
@@ -38,19 +84,7 @@ Handoff:
 Suggest the single most important next development task.
 """
 
-    return chat(prompt)
-
-def chat(prompt: str, task_type="general"):
-    model = get_model(task_type)
-
-    response = ollama.chat(
-        model=model,
-        messages=[
-            {
-                "role": "user",
-                "content": prompt
-            }
-        ]
+    return chat(
+        prompt,
+        task_type="planning"
     )
-
-    return response["message"]["content"]
