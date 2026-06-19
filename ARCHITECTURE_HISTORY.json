@@ -1,0 +1,16 @@
+[
+  {
+    "timestamp": "2026-06-19T23:15:09.491356",
+    "debt": {
+      "score": 76,
+      "health": "Good",
+      "strengths": 4,
+      "weaknesses": 3,
+      "priorities": [
+        "Split responsibilities in src\\main.py",
+        "Review dead code candidates",
+        "Review isolated modules"
+      ]
+    }
+  }
+]

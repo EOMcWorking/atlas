@@ -16,11 +16,22 @@ from src.api.context import router as context_router
 from src.api.review import router as review_router
 from src.api.context_selector import router as context_selector_router
 from src.api.project_index import router as project_index_router
+from src.api.architecture import router as architecture_router
+from src.api.architecture_analysis import router as architecture_analysis_router
+from src.api.dead_code import router as dead_code_router
+from src.api.architecture_review import router as architecture_review_router
+from src.api.inspection import router as inspection_router
+from src.api.recommendations import router as recommendations_router
+from src.api.circular_dependencies import router as circular_dependencies_router
+from src.api.large_files import router as large_files_router
+from src.api.technical_debt import router as technical_debt_router
+from src.api.architecture_history import router as history_router
 
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Atlas")
 app.include_router(status_router)
+app.include_router(technical_debt_router)
 app.include_router(project_context_router)
 app.include_router(context_router)
 app.include_router(models_router)
@@ -35,6 +46,16 @@ app.include_router(project_index_router)
 app.include_router(project_router)
 app.include_router(review_router)
 app.include_router(context_selector_router)
+app.include_router(architecture_router)
+app.include_router(architecture_analysis_router)
+app.include_router(dead_code_router)
+app.include_router(architecture_review_router)
+app.include_router(inspection_router)
+app.include_router(recommendations_router)
+app.include_router(circular_dependencies_router)
+app.include_router(large_files_router)
+app.include_router(history_router)
+app.include_router(architecture_router)
 
 @app.get("/")
 def root():
