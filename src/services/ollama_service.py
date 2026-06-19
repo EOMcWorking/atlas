@@ -2,33 +2,30 @@ from pathlib import Path
 
 from src.providers.provider_router import get_provider_chain
 
-from src.services.model_router import get_model
+from src.services.context_builder import build_context
 
+from src.services.model_router import get_model
 
 
 def chat(
     prompt: str,
     task_type: str = "general"
 ):
-    from src.services.memory_service import (
-        get_relevant_context
+    model = get_model(
+        task_type
     )
 
-    model = get_model(task_type)
+    enhanced_prompt = prompt
 
-    context = get_relevant_context(
-        prompt
-    )
-
-    enhanced_prompt = f"""
-Atlas Memory:
-
-{chr(10).join(context)}
-
-User Request:
-
-{prompt}
-"""
+    if task_type in [
+        "review",
+        "planning"
+    ]:
+        enhanced_prompt = (
+            build_context(
+                prompt
+            )
+        )
 
     for provider in get_provider_chain():
 

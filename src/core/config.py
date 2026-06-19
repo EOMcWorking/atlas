@@ -11,5 +11,7 @@ MODELS = {
 DEFAULT_PROVIDER = "ollama"
 
 PROVIDER_FALLBACKS = [
+    "openai",
+    "claude",
     "ollama"
 ]
