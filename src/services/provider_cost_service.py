@@ -2,6 +2,7 @@ PROVIDER_COSTS = {
     "openrouter": 1,
     "groq": 1,
     "github": 1,
+    "gemini": 2,
     "openai": 3,
     "claude": 3,
     "ollama": 0

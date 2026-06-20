@@ -1,20 +1,26 @@
 from src.core.config import (
-TASK_PROVIDER_MAP,
-PROVIDER_FALLBACKS
+    TASK_PROVIDER_MAP,
+    PROVIDER_FALLBACKS
 )
 
 from src.services.provider_health_service import (
-get_provider_status
+    get_provider_status
 )
 
 from src.services.provider_ranking_service import (
-rank_providers
+    get_ranked_providers
+)
+
+from src.services.provider_cooldown_service import (
+    is_on_cooldown
 )
 
 def get_best_provider():
+
     return select_provider(
         "general"
     )
+
 
 def select_provider(
     task_type: str
@@ -33,15 +39,33 @@ def select_provider(
         return preferred
 
     for provider in PROVIDER_FALLBACKS:
+
         if status.get(provider):
             return provider
 
     return "ollama"
 
-def get_ranked_providers():
-    ranked = rank_providers()
 
-    if ranked:
-        return ranked
+def get_ranked_provider_list(
+    task_type: str = "general"
+):
+
+    ranked = get_ranked_providers(
+        task_type
+    )
+
+    available = []
+
+    for provider in ranked:
+
+        if not is_on_cooldown(
+            provider
+        ):
+            available.append(
+                provider
+            )
+
+    if available:
+        return available
 
     return PROVIDER_FALLBACKS

@@ -25,16 +25,20 @@ GOOGLE_API_KEY = os.getenv(
     "GOOGLE_API_KEY",
     ""
 )
+
+GEMINI_API_KEY = os.getenv(
+    "GEMINI_API_KEY",
+    ""
+)
+
 DEFAULT_MODEL = "qwen2.5-coder:7b"
 
 MODELS = {
-    "coding": "qwen2.5-coder:7b",
-    "review": "deepseek-coder:6.7b",
-    "planning": "qwen2.5-coder:1.5b",
-    "general": "qwen2.5-coder:7b",
-    "fast": "qwen2.5-coder:1.5b",
-    "gpt_fast": "gpt-4.1-mini",
-    "gpt_smart": "gpt-5"
+    "coding": "deepseek/deepseek-chat",
+    "review": "anthropic/claude-sonnet-4",
+    "planning": "google/gemini-2.5-flash",
+    "general": "openai/gpt-5",
+    "fast": "llama-3.3-70b-versatile"
 }
 
 DEFAULT_PROVIDER = "ollama"
@@ -43,6 +47,7 @@ PROVIDER_FALLBACKS = [
     "openrouter",
     "groq",
     "github",
+    "gemini",
     "openai",
     "claude",
     "ollama"

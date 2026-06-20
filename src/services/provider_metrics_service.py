@@ -1,6 +1,8 @@
 from pathlib import Path
 import json
 
+import time
+
 METRICS_FILE = Path(
     "provider_metrics.json"
 )
@@ -68,5 +70,36 @@ def record_failure(
     )
 
     provider["failures"] += 1
+
+    save_metrics(metrics)
+
+def record_latency(
+    provider_name: str,
+    latency: float
+):
+
+    metrics = load_metrics()
+
+    provider = metrics.setdefault(
+        provider_name,
+        {
+            "success": 0,
+            "failures": 0,
+            "latency": []
+        }
+    )
+
+    provider.setdefault(
+        "latency",
+        []
+    )
+
+    provider["latency"].append(
+        latency
+    )
+
+    provider["latency"] = (
+        provider["latency"][-20:]
+    )
 
     save_metrics(metrics)

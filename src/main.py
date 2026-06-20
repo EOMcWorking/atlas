@@ -30,6 +30,7 @@ from src.api.providers_test import router as providers_test_router
 from src.api.provider_health import router as provider_health_router
 from src.api.provider_metrics import router as provider_metrics_router
 from src.api.providers_ranking import router as providers_ranking_router
+from src.api.agents import router as agents_router
 
 
 Base.metadata.create_all(bind=engine)
@@ -65,6 +66,7 @@ app.include_router(providers_test_router)
 app.include_router(provider_health_router)
 app.include_router(provider_metrics_router)
 app.include_router(providers_ranking_router)
+app.include_router(agents_router)
 
 
 @app.get("/")

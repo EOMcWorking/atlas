@@ -1,4 +1,5 @@
 from pathlib import Path
+import time
 
 from src.providers.provider_router import (
     get_provider_chain
@@ -14,9 +15,13 @@ from src.services.model_router import (
 
 from src.services.provider_metrics_service import (
     record_success,
-    record_failure
+    record_failure,
+    record_latency
 )
 
+from src.services.provider_cooldown_service import (
+    put_on_cooldown
+)
 
 def chat(
     prompt: str,
@@ -52,6 +57,8 @@ def chat(
 
         try:
 
+            start = time.time()
+
             response = provider.chat(
                 enhanced_prompt,
                 model
@@ -60,7 +67,15 @@ def chat(
             print(
                 f"SUCCESS: {provider_name}"
             )
+            latency = (
+                time.time()
+                - start
+            )
 
+            record_latency(
+                provider_name,
+                latency
+        )
             record_success(
                 provider_name
             )
@@ -69,19 +84,19 @@ def chat(
 
         except Exception as e:
 
-            print(
-                f"FAILED: {provider_name}"
-            )
-
-            record_failure(
+            put_on_cooldown(
                 provider_name
-            )
+        )
 
-            print(
-                f"Provider failed: {e}"
-            )
+        record_failure(
+            provider_name
+        )
 
-            continue
+        print(
+            f"Provider failed: {e}"
+        )
+
+        continue
 
     raise Exception(
         "No provider available"

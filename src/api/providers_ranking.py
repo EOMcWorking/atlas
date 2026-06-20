@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 
 from src.services.provider_ranking_service import (
-    rank_providers
+    get_ranked_providers
 )
 
 router = APIRouter()
@@ -11,5 +11,5 @@ router = APIRouter()
 def provider_ranking():
 
     return {
-        "ranking": rank_providers()
+        "ranking": get_ranked_providers()
     }

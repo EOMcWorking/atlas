@@ -7,7 +7,7 @@ from src.services.provider_cost_service import (
 )
 
 
-def rank_providers():
+def get_ranked_providers():
 
     metrics = get_metrics()
 
@@ -32,10 +32,22 @@ def rank_providers():
             0
         )
 
+        latencies = stats.get(
+            "latency",
+            []
+        )
+
+        avg_latency = (
+            sum(latencies) / len(latencies)
+            if latencies
+            else 1
+        )
+
         score = (
             (success * 10)
             - (failures * 5)
             - cost
+            - avg_latency
         )
 
         scores.append(

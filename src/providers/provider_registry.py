@@ -6,6 +6,7 @@ from src.providers.claude_provider import ClaudeProvider
 from src.providers.openrouter_provider import OpenRouterProvider
 from src.providers.groq_provider import GroqProvider
 from src.providers.github_provider import GitHubProvider
+from src.providers.gemini_provider import GeminiProvider
 
 from src.core.config import DEFAULT_PROVIDER
 
@@ -30,6 +31,12 @@ if os.getenv("GROQ_API_KEY"):
 if os.getenv("GITHUB_MODELS_API_KEY"):
     providers["github"] = GitHubProvider()
 
+if os.getenv(
+    "GEMINI_API_KEY"
+):
+    providers["gemini"] = (
+        GeminiProvider()
+    )
 
 def get_provider():
     return providers[DEFAULT_PROVIDER]
