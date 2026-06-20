@@ -26,6 +26,11 @@ from src.api.circular_dependencies import router as circular_dependencies_router
 from src.api.large_files import router as large_files_router
 from src.api.technical_debt import router as technical_debt_router
 from src.api.architecture_history import router as history_router
+from src.api.providers_test import router as providers_test_router
+from src.api.provider_health import router as provider_health_router
+from src.api.provider_metrics import router as provider_metrics_router
+from src.api.providers_ranking import router as providers_ranking_router
+
 
 Base.metadata.create_all(bind=engine)
 
@@ -56,6 +61,11 @@ app.include_router(circular_dependencies_router)
 app.include_router(large_files_router)
 app.include_router(history_router)
 app.include_router(architecture_router)
+app.include_router(providers_test_router)
+app.include_router(provider_health_router)
+app.include_router(provider_metrics_router)
+app.include_router(providers_ranking_router)
+
 
 @app.get("/")
 def root():

@@ -1,21 +1,24 @@
-from src.core.config import (
-    PROVIDER_FALLBACKS
-)
-
 from src.providers.provider_registry import (
-    providers
+providers
 )
 
+from src.services.provider_selection_service import (
+get_ranked_providers
+)
 
-def get_provider_chain():
+def get_provider_chain(task_type: str):
+    ranked = (
+        get_ranked_providers(task_type)
+    )
+
     chain = []
 
-    for provider_name in PROVIDER_FALLBACKS:
-        provider = providers.get(
-            provider_name
-        )
-
-        if provider:
-            chain.append(provider)
+    for provider_name in ranked:
+        if provider_name in providers:
+            chain.append(
+                providers[
+                    provider_name
+                ]
+            )
 
     return chain

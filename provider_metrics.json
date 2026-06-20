@@ -1,0 +1,18 @@
+{
+  "OpenRouterProvider": {
+    "success": 0,
+    "failures": 2
+  },
+  "OpenAIProvider": {
+    "success": 0,
+    "failures": 1
+  },
+  "ClaudeProvider": {
+    "success": 0,
+    "failures": 1
+  },
+  "OllamaProvider": {
+    "success": 1,
+    "failures": 0
+  }
+}

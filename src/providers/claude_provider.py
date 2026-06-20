@@ -13,3 +13,5 @@ class ClaudeProvider(
         raise NotImplementedError(
             "Claude provider not implemented"
         )
+    def health_check(self):
+        return False

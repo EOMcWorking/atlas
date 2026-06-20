@@ -17,3 +17,8 @@ class OllamaProvider(AIProvider):
         )
 
         return response["message"]["content"]
+    def health_check(self):
+
+        ollama.list()
+
+        return True
