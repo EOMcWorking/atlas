@@ -103,3 +103,27 @@ def record_latency(
     )
 
     save_metrics(metrics)
+
+def get_average_latency(
+    provider_name: str
+):
+
+    metrics = load_metrics()
+
+    provider = metrics.get(
+        provider_name,
+        {}
+    )
+
+    latencies = provider.get(
+        "latencies",
+        []
+    )
+
+    if not latencies:
+        return 999
+
+    return (
+        sum(latencies)
+        / len(latencies)
+    )

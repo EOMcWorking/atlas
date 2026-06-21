@@ -15,6 +15,10 @@ from src.services.provider_cooldown_service import (
     is_on_cooldown
 )
 
+from src.services.provider_task_metrics_service import (
+    get_task_winner
+)
+
 def get_best_provider():
 
     return select_provider(
@@ -50,22 +54,24 @@ def get_ranked_provider_list(
     task_type: str = "general"
 ):
 
-    ranked = get_ranked_providers(
+    ranked = get_ranked_providers(task_type)
+
+    winner = get_task_winner(
         task_type
     )
 
-    available = []
+    if (
+        winner
+        and winner in ranked
+    ):
 
-    for provider in ranked:
+        ranked.remove(
+            winner
+        )
 
-        if not is_on_cooldown(
-            provider
-        ):
-            available.append(
-                provider
-            )
+        ranked.insert(
+            0,
+            winner
+        )
 
-    if available:
-        return available
-
-    return PROVIDER_FALLBACKS
+    return ranked

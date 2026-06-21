@@ -58,11 +58,23 @@ def is_on_cooldown(
     cooldowns = load_cooldowns()
 
     expires = cooldowns.get(
-        provider_name,
-        0
+        provider_name
     )
 
-    return (
-        time.time()
-        < expires
-    )
+    if not expires:
+        return False
+
+    if time.time() >= expires:
+
+        cooldowns.pop(
+            provider_name,
+            None
+        )
+
+        save_cooldowns(
+            cooldowns
+        )
+
+        return False
+
+    return True

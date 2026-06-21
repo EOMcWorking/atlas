@@ -60,3 +60,30 @@ TASK_PROVIDER_MAP = {
     "general": "openrouter",
     "fast": "ollama"
 }
+
+TASK_MODELS = {
+
+    "general": {
+        "openrouter": "openai/gpt-5",
+        "openai": "gpt-5",
+        "ollama": "qwen2.5-coder:7b"
+    },
+
+    "planning": {
+        "openrouter": "google/gemini-2.5-flash",
+        "openai": "gpt-5-mini",
+        "ollama": "qwen2.5:3b"
+    },
+
+    "coding": {
+        "openrouter": "deepseek/deepseek-chat",
+        "openai": "gpt-5",
+        "ollama": "qwen2.5-coder:7b"
+    },
+
+    "review": {
+        "openrouter": "anthropic/claude-sonnet-4",
+        "openai": "gpt-5",
+        "ollama": "deepseek-coder:6.7b"
+    }
+}

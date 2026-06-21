@@ -1,13 +1,20 @@
 from src.services.provider_metrics_service import (
-    get_metrics
+    get_metrics,
+    get_average_latency
 )
 
 from src.services.provider_cost_service import (
     get_provider_costs
 )
 
+from src.services.provider_task_metrics_service import (
+    get_task_score
+)
 
-def get_ranked_providers():
+
+def get_ranked_providers(
+    task_type: str = "general"
+):
 
     metrics = get_metrics()
 
@@ -32,22 +39,21 @@ def get_ranked_providers():
             0
         )
 
-        latencies = stats.get(
-            "latency",
-            []
+        latency = get_average_latency(
+            provider
         )
 
-        avg_latency = (
-            sum(latencies) / len(latencies)
-            if latencies
-            else 1
+        task_score = get_task_score(
+            task_type,
+            provider
         )
 
         score = (
             (success * 10)
-            - (failures * 5)
-            - cost
-            - avg_latency
+            - (failures * 8)
+            - (latency * 2)
+            - (cost * 5)
+            + task_score
         )
 
         scores.append(

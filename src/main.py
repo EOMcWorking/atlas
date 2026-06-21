@@ -31,7 +31,8 @@ from src.api.provider_health import router as provider_health_router
 from src.api.provider_metrics import router as provider_metrics_router
 from src.api.providers_ranking import router as providers_ranking_router
 from src.api.agents import router as agents_router
-
+from src.api.providers_intelligence import router as providers_intelligence_router
+from src.api.provider_benchmark import router as provider_benchmark_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -67,7 +68,8 @@ app.include_router(provider_health_router)
 app.include_router(provider_metrics_router)
 app.include_router(providers_ranking_router)
 app.include_router(agents_router)
-
+app.include_router(providers_intelligence_router)
+app.include_router(provider_benchmark_router)
 
 @app.get("/")
 def root():
