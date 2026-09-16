@@ -1,2 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "atlas-ai"
+version = "1.0.0"
+description = "Atlas AI Software Engineering System"
+requires-python = ">=3.11"
+
+[project.scripts]
+atlas = "src.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src", "src.*"]
+
 [tool.black]
 line-length = 60
