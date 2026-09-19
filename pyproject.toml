@@ -7,6 +7,17 @@ name = "atlas-ai"
 version = "1.0.0"
 description = "Atlas AI Software Engineering System"
 requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "google-genai",
+    "ollama",
+    "openai",
+    "pydantic",
+    "python-dotenv",
+    "requests",
+    "sqlalchemy",
+    "uvicorn",
+]
 
 [project.scripts]
 atlas = "src.cli:main"
