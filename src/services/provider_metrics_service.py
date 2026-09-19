@@ -116,7 +116,7 @@ def get_average_latency(
     )
 
     latencies = provider.get(
-        "latencies",
+        "latency",
         []
     )
 

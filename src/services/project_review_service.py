@@ -1,22 +1,36 @@
 from pathlib import Path
 
 from src.services.ollama_service import chat
+from src.services.workspace_service import get_docs_path
 
 
 def review_project():
-    project = Path("PROJECT.md").read_text(
+
+    docs_path = Path(
+        get_docs_path()
+    )
+
+    project = (
+        docs_path / "PROJECT.md"
+    ).read_text(
         encoding="utf-8"
     )
 
-    tasks = Path("TASKS.md").read_text(
+    tasks = (
+        docs_path / "TASKS.md"
+    ).read_text(
         encoding="utf-8"
     )
 
-    decisions = Path("DECISIONS.md").read_text(
+    decisions = (
+        docs_path / "DECISIONS.md"
+    ).read_text(
         encoding="utf-8"
     )
 
-    handoff = Path("HANDOFF.md").read_text(
+    handoff = (
+        docs_path / "HANDOFF.md"
+    ).read_text(
         encoding="utf-8"
     )
 
@@ -44,7 +58,7 @@ Provide:
 3. Missing feature
 4. Most important next task
 """
-    
+
     return chat(
         prompt,
         task_type="review"

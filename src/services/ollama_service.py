@@ -36,22 +36,25 @@ from src.services.provider_retry_service import (
     retry_provider_call
 )
 
+
 def chat(
     prompt: str,
     task_type: str = "general"
 ):
-
     enhanced_prompt = prompt
 
-    if task_type in [
-        "review",
-        "planning"
-    ]:
+    if task_type == "planning":
         enhanced_prompt = (
             build_context(
                 prompt
             )
         )
+
+    print(
+        f"CHAT START: {task_type}"
+        "CONTEXT LENGTH:",
+        len(enhanced_prompt)
+    )
 
     for provider in get_provider_chain(task_type):
 
@@ -78,14 +81,27 @@ def chat(
         )
 
         try:
-
             start = time.time()
+
+            print(
+                "PROMPT LENGTH:",
+                len(enhanced_prompt)
+            )
+            print(
+                "TASK TYPE:",
+                task_type
+            )
 
             response = retry_provider_call(
                 provider,
                 enhanced_prompt,
                 model
             )
+
+            # Clean up code fences and whitespace
+            response = response.replace("```python", "")
+            response = response.replace("```", "")
+            response = response.strip()
 
             latency = (
                 time.time()
@@ -109,17 +125,14 @@ def chat(
             print(
                 f"SUCCESS: {provider_name}"
             )
+            print(
+                f"CHAT END: {task_type}"
+            )
 
             return response
 
         except Exception as e:
-
             cooldown = get_cooldown_seconds(e)
-
-            put_on_cooldown(
-                provider_name,
-                cooldown
-            )
 
             put_on_cooldown(
                 provider_name,
@@ -147,7 +160,6 @@ def chat(
 
 
 def suggest_next_task():
-
     tasks = Path(
         "TASKS.md"
     ).read_text(
@@ -181,7 +193,11 @@ Handoff:
 Suggest the single most important next development task.
 """
 
-    return chat(
+    print("PLAN START")
+    response = chat(
         prompt,
         task_type="planning"
     )
+    print("PLAN END")
+
+    return response

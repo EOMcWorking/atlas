@@ -33,43 +33,110 @@ from src.api.providers_ranking import router as providers_ranking_router
 from src.api.agents import router as agents_router
 from src.api.providers_intelligence import router as providers_intelligence_router
 from src.api.provider_benchmark import router as provider_benchmark_router
+from src.api.git import router as git_router
+from src.api.dashboard import router as dashboard_router
+from src.api.approval import router as approval_router
+from src.api.system import router as system_router
+from src.api.workflow import router as workflow_router
+from src.api.project_evolution import router as project_evolution_router
+from src.api.runtime import router as runtime_router
 
-Base.metadata.create_all(bind=engine)
+from src.services.database_init_service import (
+    initialize_database
+)
 
-app = FastAPI(title="Atlas")
+
+from contextlib import asynccontextmanager
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+
+    initialize_database()
+    Base.metadata.create_all(bind=engine)
+
+    yield
+
+app = FastAPI(
+    title="Atlas",
+    version="1.0.0",
+    lifespan=lifespan,
+)
+
+# ---------------------------------------------------------------------------
+# Core
+# ---------------------------------------------------------------------------
 app.include_router(status_router)
-app.include_router(technical_debt_router)
-app.include_router(project_context_router)
-app.include_router(context_router)
-app.include_router(models_router)
-app.include_router(providers_router)
-app.include_router(orchestrator_router)
-app.include_router(task_router)
-app.include_router(memory_router)
-app.include_router(handoff_router)
+app.include_router(system_router)
+app.include_router(workflow_router)
+
+# ---------------------------------------------------------------------------
+# AI
+# ---------------------------------------------------------------------------
 app.include_router(ai_router)
-app.include_router(snapshot_router)
-app.include_router(project_index_router)
+app.include_router(models_router)
+app.include_router(orchestrator_router)
+app.include_router(agents_router)
+
+# ---------------------------------------------------------------------------
+# Project
+# ---------------------------------------------------------------------------
 app.include_router(project_router)
-app.include_router(review_router)
-app.include_router(context_selector_router)
+app.include_router(project_context_router)
+app.include_router(project_index_router)
+app.include_router(project_evolution_router)
+
+# ---------------------------------------------------------------------------
+# Architecture
+# ---------------------------------------------------------------------------
 app.include_router(architecture_router)
 app.include_router(architecture_analysis_router)
-app.include_router(dead_code_router)
 app.include_router(architecture_review_router)
+app.include_router(history_router)
+
+# ---------------------------------------------------------------------------
+# Code Quality
+# ---------------------------------------------------------------------------
+app.include_router(dead_code_router)
+app.include_router(large_files_router)
+app.include_router(technical_debt_router)
+app.include_router(circular_dependencies_router)
 app.include_router(inspection_router)
 app.include_router(recommendations_router)
-app.include_router(circular_dependencies_router)
-app.include_router(large_files_router)
-app.include_router(history_router)
-app.include_router(architecture_router)
+
+# ---------------------------------------------------------------------------
+# Providers
+# ---------------------------------------------------------------------------
+app.include_router(providers_router)
 app.include_router(providers_test_router)
 app.include_router(provider_health_router)
 app.include_router(provider_metrics_router)
 app.include_router(providers_ranking_router)
-app.include_router(agents_router)
 app.include_router(providers_intelligence_router)
 app.include_router(provider_benchmark_router)
+
+# ---------------------------------------------------------------------------
+# Tasks & Memory
+# ---------------------------------------------------------------------------
+app.include_router(task_router)
+app.include_router(memory_router)
+app.include_router(handoff_router)
+app.include_router(snapshot_router)
+
+# ---------------------------------------------------------------------------
+# Context & Review
+# ---------------------------------------------------------------------------
+app.include_router(context_router)
+app.include_router(context_selector_router)
+app.include_router(review_router)
+
+# ---------------------------------------------------------------------------
+# Runtime
+# ---------------------------------------------------------------------------
+app.include_router(git_router)
+app.include_router(dashboard_router)
+app.include_router(approval_router)
+app.include_router(runtime_router)
+
 
 @app.get("/")
 def root():

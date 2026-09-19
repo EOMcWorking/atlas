@@ -1,20 +1,22 @@
 from src.services.ollama_service import chat
 
 
-def review(
-    code: str
-):
+def review(code: str):
 
     prompt = f"""
-Review the following code:
+Review this code.
 
+Return ONLY:
+
+VERDICT: APPROVED
+
+or
+
+VERDICT: REJECTED
+Reason: <one sentence>
+
+CODE:
 {code}
-
-Identify:
-- Bugs
-- Improvements
-- Security Issues
-- Refactoring Opportunities
 """
 
     return chat(

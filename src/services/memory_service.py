@@ -1,17 +1,81 @@
 from pathlib import Path
 
+from src.services.project_paths_service import (
+    get_project_file
+)
+from src.services.workspace_service import (
+    get_docs_path
+)
 
-PROJECT_FILE = Path("PROJECT.md")
-TASKS_FILE = Path("TASKS.md")
-DECISIONS_FILE = Path("DECISIONS.md")
-HANDOFF_FILE = Path("HANDOFF.md")
-MEMORY_FILE = Path("MEMORY.md")
+
+def get_docs_file(
+    filename: str
+):
+    return Path(
+        get_docs_path()
+    ) / filename
+
+
+def get_decisions_file(
+    project_name: str = None
+):
+
+    if project_name is None:
+        return get_docs_file(
+            "DECISIONS.md"
+        )
+
+    return Path(
+        get_project_file(
+            project_name,
+            "DECISIONS.md"
+        )
+    )
+
+
+def get_memory_file(
+    project_name: str = None
+):
+
+    if project_name is None:
+        return get_docs_file(
+            "MEMORY.md"
+        )
+
+    return Path(
+        get_project_file(
+            project_name,
+            "MEMORY.md"
+        )
+    )
+
+
+def get_handoff_file(
+    project_name: str = None
+):
+
+    if project_name is None:
+        return get_docs_file(
+            "HANDOFF.md"
+        )
+
+    return Path(
+        get_project_file(
+            project_name,
+            "HANDOFF.md"
+        )
+    )
 
 
 def append_to_file(
     file_path: Path,
     text: str
 ):
+    file_path.parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
     with open(
         file_path,
         "a",
@@ -25,6 +89,7 @@ def append_to_file(
 def read_file(
     file_path: Path
 ):
+
     if not file_path.exists():
         return ""
 
@@ -37,80 +102,123 @@ def read_file(
 
 
 def search_decisions(
-    query: str
+    query: str,
+    project_name: str = None
 ):
+    """
+    Exact lookup in DECISIONS.md only.
+    """
+
     content = read_file(
-        DECISIONS_FILE
+        get_decisions_file(
+            project_name
+        )
     )
 
     matches = []
 
     for line in content.splitlines():
 
-        if query.lower() in (
-            line.lower()
-        ):
-            matches.append(
-                line
-            )
+        if query.lower() in line.lower():
+            matches.append(line)
 
     return matches
 
 
 def get_relevant_context(
     query: str,
-    limit: int = 10
+    limit: int = 10,
+    project_name: str = None
 ):
-    content = read_file(
-        DECISIONS_FILE
-    )
+    """
+    Search across DECISIONS.md, MEMORY.md,
+    and HANDOFF.md.
+    """
 
-    matches = []
-
-    query_words = (
-        query.lower().split()
-    )
-
-    for line in content.splitlines():
-
-        line_lower = (
-            line.lower()
-        )
-
-        score = 0
-
-        for word in query_words:
-
-            if word in line_lower:
-                score += 1
-
-        if score > 0:
-            matches.append(
-                (
-                    score,
-                    line
-                )
+    sources = [
+        read_file(
+            get_decisions_file(
+                project_name
             )
+        ),
+        read_file(
+            get_memory_file(
+                project_name
+            )
+        ),
+        read_file(
+            get_handoff_file(
+                project_name
+            )
+        ),
+    ]
 
-    matches.sort(
+    all_matches = []
+
+    query_words = query.lower().split()
+
+    for source_content in sources:
+
+        for line in source_content.splitlines():
+
+            line_lower = line.lower()
+
+            score = 0
+
+            for word in query_words:
+
+                if word in line_lower:
+                    score += 1
+
+            if score > 0:
+                all_matches.append(
+                    (
+                        score,
+                        line
+                    )
+                )
+
+    all_matches.sort(
         reverse=True
     )
 
     return [
         line
         for score, line
-        in matches[:limit]
+        in all_matches[:limit]
     ]
 
 
-def summarize_decisions():
+def save_memory(
+    text: str,
+    project_name: str = None
+):
+    """
+    Append to MEMORY.md.
+    """
+
+    memory_file = get_memory_file(
+        project_name
+    )
+
+    append_to_file(
+        memory_file,
+        text
+    )
+
+
+def summarize_decisions(
+    project_name: str = None
+):
 
     from src.services.ollama_service import (
         chat
     )
 
     content = read_file(
-        DECISIONS_FILE
+        get_decisions_file(
+            project_name
+        )
     )
 
     prompt = f"""

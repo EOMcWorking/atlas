@@ -2,7 +2,11 @@
 __pycache__/
 *.pyc
 
-atlas.db
+*.egg-info/
+build/
+dist/
+
+*.db
 
 .vscode/
 .idea/
@@ -12,4 +16,14 @@ atlas.db
 
 *.log
 
+.atlas/
 atlas_snapshot.json
+
+approvals.json
+provider_cooldowns.json
+provider_task_metrics.json
+workflow_metrics.json
+src/atlas_data/
+projects/
+config/workspace.json
+provider_metrics.json

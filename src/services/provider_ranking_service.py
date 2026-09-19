@@ -39,8 +39,11 @@ def get_ranked_providers(
             0
         )
 
-        latency = get_average_latency(
-            provider
+        latency = min(
+            get_average_latency(
+                provider
+            ),
+            60
         )
 
         task_score = get_task_score(

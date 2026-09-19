@@ -1,20 +1,30 @@
 from src.services.ollama_service import chat
+from src.services.code_cleaner_service import clean_code_response
 
 
-def code(
-    task: str
-):
+def code(task: str):
 
     prompt = f"""
-Write code for:
+You are a senior software engineer.
 
+TASK:
 {task}
 
-Provide only the code
-and necessary explanation.
+Rules:
+- Return ONLY code
+- No explanations
+- No markdown
+- No code fences
+- No example usage
+- No comments unless required
+- Output must be directly usable
 """
 
-    return chat(
+    response = chat(
         prompt,
         task_type="coding"
+    )
+
+    return clean_code_response(
+        response
     )

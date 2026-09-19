@@ -7,17 +7,22 @@ from src.services.project_context_service import (
 
 def find_relevant_files(
     query: str,
-    limit: int = 10
+    limit: int = 10,
+    project_name: str = None
 ):
+
     query_words = (
         query.lower().split()
     )
 
     matches = []
 
-    for file in get_project_files():
+    for file in get_project_files(
+        project_name
+    ):
 
         try:
+
             content = file.read_text(
                 encoding="utf-8"
             )
@@ -36,8 +41,12 @@ def find_relevant_files(
                     score += 1
 
             if score > 0:
+
                 matches.append(
-                    (score, file)
+                    (
+                        score,
+                        file
+                    )
                 )
 
         except Exception:
@@ -56,18 +65,23 @@ def find_relevant_files(
 
 def build_targeted_context(
     query: str,
+    project_name: str = None,
     max_chars: int = 15000
 ):
+
     files = find_relevant_files(
-        query
+        query,
+        project_name=project_name
     )
 
     context = []
+
     total_chars = 0
 
     for file in files:
 
         try:
+
             content = file.read_text(
                 encoding="utf-8"
             )

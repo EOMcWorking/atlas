@@ -1,23 +1,31 @@
 from src.services.ollama_service import chat
 
 
-def analyze(
-    context: str
+def architect(
+    plan_result: str,
+    research_result: str
 ):
 
     prompt = f"""
-Analyze the architecture:
+Review this proposed implementation.
 
-{context}
+PLAN:
+
+{plan_result}
+
+RESEARCH:
+
+{research_result}
 
 Provide:
-- Strengths
-- Weaknesses
-- Risks
-- Recommendations
+
+- Better alternatives
+- Architectural concerns
+- Scalability concerns
+- Final recommendation
 """
 
     return chat(
         prompt,
-        task_type="planning"
+        task_type="general"
     )

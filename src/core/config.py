@@ -16,6 +16,16 @@ GROQ_API_KEY = os.getenv(
     ""
 )
 
+OMNIROUTE_API_KEY = os.getenv(
+    "OMNIROUTE_API_KEY",
+    ""
+)
+
+OMNIROUTE_BASE_URL = os.getenv(
+    "OMNIROUTE_BASE_URL",
+    "https://api.omniroute.ai/v1"
+)
+
 GITHUB_MODELS_API_KEY = os.getenv(
     "GITHUB_MODELS_API_KEY",
     ""
@@ -84,6 +94,6 @@ TASK_MODELS = {
     "review": {
         "openrouter": "anthropic/claude-sonnet-4",
         "openai": "gpt-5",
-        "ollama": "deepseek-coder:6.7b"
+        "ollama": "qwen2.5:3b"
     }
 }

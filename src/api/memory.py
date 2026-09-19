@@ -8,8 +8,8 @@ from src.services.memory_service import (
     append_to_file,
     read_file,
     search_decisions,
-    DECISIONS_FILE,
-    MEMORY_FILE,
+    get_decisions_file,
+    get_memory_file,
 )
 
 router = APIRouter()
@@ -18,7 +18,7 @@ router = APIRouter()
 @router.post("/memory/decision")
 def add_decision(entry: MemoryEntry):
     append_to_file(
-        DECISIONS_FILE,
+        get_decisions_file(),
         entry.text
     )
 
@@ -31,7 +31,7 @@ def add_decision(entry: MemoryEntry):
 def get_decisions():
     return {
         "content": read_file(
-            DECISIONS_FILE
+            get_decisions_file()
         )
     }
 
@@ -56,11 +56,11 @@ def add_memory(
     entry: MemoryEntry
 ):
     append_to_file(
-        MEMORY_FILE,
+        get_memory_file(),
         entry.text
     )
     read_file(
-    MEMORY_FILE
+    get_memory_file()
     )
     return {
         "status": "saved"
