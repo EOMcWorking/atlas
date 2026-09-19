@@ -1,9 +1,5 @@
 from fastapi import APIRouter
 
-from src.services.provider_metrics_service import (
-    get_metrics
-)
-
 from src.services.provider_task_metrics_service import (
     load_task_metrics
 )
@@ -17,13 +13,6 @@ from src.services.provider_ranking_service import (
 )
 
 router = APIRouter()
-
-
-@router.get("/providers/metrics")
-def provider_metrics():
-
-    return get_metrics()
-
 
 @router.get("/providers/task-metrics")
 def provider_task_metrics():
